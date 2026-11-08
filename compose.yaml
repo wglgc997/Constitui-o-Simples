@@ -1,1 +1,43 @@
-services: {}
+
+# Define os serviços necessários ao ambiente local.
+services:
+  postgres:
+    # Versão principal fixa para evitar
+    # atualizações incompatíveis do banco.
+    image: postgres:17
+
+    # Nome identificável do contêiner.
+    container_name: constituicao-simples-db
+
+    # Reinicia o serviço automaticamente, exceto
+    # quando interrompido manualmente.
+    restart: unless-stopped
+
+    # Configurações iniciais do PostgreSQL.
+    # Os valores são carregados de um arquivo .env
+    # localizado na raiz do projeto.
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    # A porta fica acessível apenas pelo próprio computador.
+    ports:
+      - "127.0.0.1:5432:5432"
+
+    # Preserva os dados quando o contêiner é recriado.
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    # Verifica se o banco aceita conexões.
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# Volume gerenciado pelo Docker para persistência.
+volumes:
+  postgres_data:
