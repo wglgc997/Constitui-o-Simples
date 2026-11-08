@@ -1,0 +1,11 @@
+# Dependências de desenvolvimento e testes do backend.
+
+
+-r requirements.txt
+
+# Testes
+pytest>=8.3,<10.0
+pytest-cov>=6.0,<8.0
+
+# Qualidade
+ruff>=0.11,<1.0
