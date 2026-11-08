@@ -17,3 +17,6 @@ alembic>=1.15,<2.0
 httpx>=0.28,<1.0
 beautifulsoup4>=4.13,<5.0
 lxml>=5.4,<7.0
+
+# Tratamento de SSL
+truststore
