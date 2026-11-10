@@ -2,10 +2,9 @@
 
 from _collections_abc import Generator
 
+from app.core.config import settings
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
-
-from app.core.config import settings
 
 # A engine gerencia o acesso ao banco e seu pool de conexões.
 # A conexão efetiva normalmente ocorre na primeira operação.
