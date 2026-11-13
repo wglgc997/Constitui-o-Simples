@@ -10,7 +10,8 @@ from sqlalchemy.orm import Session, sessionmaker
 # A conexão efetiva normalmente ocorre na primeira operação.
 engine = create_engine(
     settings.DATABASE_URL,
-    poo_pre_ping=True,
+    pool_pre_ping=True,
+    connect_args={"connect_timeout": 5}
 )
 
 # Fábrica responsável por criar sessões independentes.

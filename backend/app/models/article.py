@@ -10,10 +10,12 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.orm import relationship
 
+from app.models.article_explanation import ArticleExplanation
 from app.models.article_theme import article_themes
 
 if TYPE_CHECKING:
     from app.models.theme import Theme
+    from app.models.practical_example import PracticalExample
 
 class Article(Base):
     """Representa um artigo da Constituição"""
@@ -66,4 +68,14 @@ class Article(Base):
     themes: Mapped[list["Theme"]] = relationship(
         secondary=article_themes,
         back_populates="articles",
+    )
+
+    practical_examples: Mapped[list["PracticalExample"]] = relationship(
+        "PracticalExample",
+        back_populates="article",
+
+    )
+
+    explanations: Mapped[list["ArticleExplanation"]] = relationship(
+        back_populates="article"
     )
