@@ -31,8 +31,8 @@ class ArticleExplanation(Base):
     )
 
     simplified_text: Mapped[str | None] = mapped_column(
-        String(150),
-        nullable=True,
+        Text,
+        nullable=False,
     )
 
     ai_model: Mapped[str | None] = mapped_column(
