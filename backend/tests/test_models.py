@@ -10,6 +10,7 @@ from app.models.article import Article
 from app.models.theme import Theme
 from app.models.article_theme import article_themes
 from app.models.practical_example import PracticalExample
+from app.models.glossary_term import GlossaryTerm
 
 
 def test_article_table_name():
@@ -236,3 +237,37 @@ def test_article_source_checked_at():
     assert isinstance(column.type, DateTime)
     assert column.type.timezone is True
     assert column.nullable is True
+
+
+
+def test_glossary_term_table():
+    """Verifica a estrutura da tabela do glossário."""
+    assert GlossaryTerm.__tablename__ == "glossary_terms"
+
+    columns = {
+        column.name
+        for column in GlossaryTerm.__table__.columns
+    }
+
+    assert columns == {
+        "id",
+        "term",
+        "definition",
+        "created_at",
+        "updated_at",
+    }
+
+
+def test_glossary_term_required_fields():
+    """Verifica os campos obrigatórios."""
+    columns = GlossaryTerm.__table__.columns
+
+    assert columns["term"].nullable is False
+    assert columns["definition"].nullable is False
+
+
+def test_glossary_term_unique():
+    """Verifica a unicidade dos termos."""
+    column = GlossaryTerm.__table__.columns["term"]
+
+    assert column.unique is True
