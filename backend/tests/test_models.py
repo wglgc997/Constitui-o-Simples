@@ -4,6 +4,7 @@
 from sqlalchemy import inspect
 from sqlalchemy.orm import configure_mappers
 from sqlalchemy import ForeignKey
+from sqlalchemy import String, DateTime, Text
 
 from app.models.article import Article
 from app.models.theme import Theme
@@ -160,4 +161,78 @@ def test_practical_example_device_reference():
     """Verifica se a referência ao dispositivo é opcional."""
     column = PracticalExample.__table__.columns["device_reference"]
 
+    assert column.nullable is True
+
+
+def test_article_explanation_device_reference():
+    """Verifica a referência opcional ao dispositivo constitucional."""
+
+    column = ArticleExplanation.__table__.columns["device_reference"]
+
+    assert isinstance(column.type, String)
+    assert column.type.length == 100
+    assert column.nullable is True
+
+
+
+def test_article_explanation_source_url():
+    """Verifica o campo de referência à fonte oficial."""
+    column = ArticleExplanation.__table__.columns["source_url"]
+
+    assert isinstance(column.type, Text)
+    assert column.nullable is True
+
+
+def test_article_explanation_source_checked_at():
+    """Verifica o campo de data da conferência da fonte."""
+    column = ArticleExplanation.__table__.columns["source_checked_at"]
+
+    assert isinstance(column.type, DateTime)
+    assert column.type.timezone is True
+    assert column.nullable is True
+
+
+def test_article_explanation_review_level():
+    """Verifica o nível de revisão da explicação."""
+    column = ArticleExplanation.__table__.columns["review_level"]
+
+    assert isinstance(column.type, String)
+    assert column.type.length == 30
+    assert column.nullable is False
+    assert column.default.arg == "none"
+
+
+def test_article_explanation_reviewed_at():
+    """Verifica a data opcional da revisão."""
+    column = ArticleExplanation.__table__.columns["reviewed_at"]
+
+    assert isinstance(column.type, DateTime)
+    assert column.type.timezone is True
+    assert column.nullable is True
+
+
+def test_article_explanation_published_at():
+    """Verifica a data opcional de publicação."""
+    column = ArticleExplanation.__table__.columns["published_at"]
+
+    assert isinstance(column.type, DateTime)
+    assert column.type.timezone is True
+    assert column.nullable is True
+
+
+
+def test_article_source_url():
+    """Verifica o campo da fonte oficial do artigo."""
+    column = Article.__table__.columns["source_url"]
+
+    assert isinstance(column.type, Text)
+    assert column.nullable is True
+
+
+def test_article_source_checked_at():
+    """Verifica a data de conferência da fonte oficial."""
+    column = Article.__table__.columns["source_checked_at"]
+
+    assert isinstance(column.type, DateTime)
+    assert column.type.timezone is True
     assert column.nullable is True

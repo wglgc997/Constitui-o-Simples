@@ -30,6 +30,21 @@ class ArticleExplanation(Base):
         index=True,
     )
 
+    device_reference: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True,
+    )
+
+    source_url: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
+    source_checked_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+
     simplified_text: Mapped[str | None] = mapped_column(
         Text,
         nullable=False,
@@ -44,6 +59,22 @@ class ArticleExplanation(Base):
         String(30),
         nullable=False,
         default="pending",
+    )
+
+    review_level: Mapped[str] = mapped_column(
+        String(30),
+        nullable=False,
+        default="none",
+    )
+
+    reviewed_at: Mapped[DateTime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+
+    published_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
     )
 
     created_at: Mapped[datetime] = mapped_column(
