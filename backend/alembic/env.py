@@ -4,9 +4,9 @@ from app.core.config import settings
 
 from alembic import context
 from app.db.base import Base
-from app.models.article import Article
-from app.models.theme import Theme
-from app.models.article_theme import article_themes
+
+import app.models # Registra modelos no Base.metadata
+
 from sqlalchemy import engine_from_config, pool
 
 # this is the Alembic Config object, which provides
