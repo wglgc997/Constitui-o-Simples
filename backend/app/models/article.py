@@ -10,12 +10,12 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.orm import relationship
 
-from app.models.article_explanation import ArticleExplanation
 from app.models.article_theme import article_themes
 
 if TYPE_CHECKING:
     from app.models.theme import Theme
     from app.models.practical_example import PracticalExample
+    from app.models.article_explanation import ArticleExplanation
 
 class Article(Base):
     """Representa um artigo da Constituição"""
@@ -52,6 +52,16 @@ class Article(Base):
         nullable=True,
     )
 
+    source_url: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
+    source_checked_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
@@ -77,5 +87,6 @@ class Article(Base):
     )
 
     explanations: Mapped[list["ArticleExplanation"]] = relationship(
+        "ArticleExplanation",
         back_populates="article"
     )
