@@ -1,6 +1,4 @@
-
 """Fixtures de integração com PostgreSQL."""
-
 
 from pathlib import Path
 
@@ -10,30 +8,23 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import make_url
 from sqlalchemy.orm import Session
 
-import app.models  # Registra todos os mapeamentos.
-
 
 @pytest.fixture(scope="session")
 def test_engine():
     """Cria o engine exclusivo dos testes."""
 
-    env_file = (
-        Path(__file__).resolve().parents[1] / ".env.test"
-    )
+    env_file = Path(__file__).resolve().parents[1] / ".env.test"
 
     database_url = dotenv_values(env_file).get("DATABASE_URL")
 
     if not database_url:
-        raise RuntimeError(
-            "DATABASE_URL ausente em backend/.env.test"
-        )
+        raise RuntimeError("DATABASE_URL ausente em backend/.env.test")
 
     url = make_url(database_url)
 
     if url.database != "constituicao_simples_test":
         raise RuntimeError(
-            "Banco de testes inválido. "
-            "Esperado: constituicao_simples_test"
+            "Banco de testes inválido. Esperado: constituicao_simples_test"
         )
 
     engine = create_engine(database_url, pool_pre_ping=True)

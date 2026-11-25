@@ -1,4 +1,3 @@
-
 """Testes de integração com PostgreSQL."""
 
 from uuid import uuid4
@@ -9,7 +8,6 @@ from sqlalchemy.exc import IntegrityError
 
 from app.models import (
     Article,
-    article_themes,
     ArticleExplanation,
     GlossaryTerm,
     PracticalExample,
@@ -111,18 +109,20 @@ def test_practical_example_persistence(db_session):
 
     article = make_article()
 
-    article.practical_examples.extend([
-        PracticalExample(
-            title="Educação",
-            description="Exemplo fictício sobre educação.",
-            device_reference="caput",
-        ),
-        PracticalExample(
-            title="Saúde",
-            description="Exemplo fictício sobre saúde.",
-            device_reference="caput",
-        ),
-    ])
+    article.practical_examples.extend(
+        [
+            PracticalExample(
+                title="Educação",
+                description="Exemplo fictício sobre educação.",
+                device_reference="caput",
+            ),
+            PracticalExample(
+                title="Saúde",
+                description="Exemplo fictício sobre saúde.",
+                device_reference="caput",
+            ),
+        ]
+    )
 
     db_session.add(article)
     db_session.commit()
@@ -135,10 +135,7 @@ def test_practical_example_persistence(db_session):
     assert saved is not None
     assert len(saved.practical_examples) == 2
 
-    titles = {
-        example.title
-        for example in saved.practical_examples
-    }
+    titles = {example.title for example in saved.practical_examples}
 
     assert titles == {"Educação", "Saúde"}
 
@@ -163,16 +160,10 @@ def test_article_explanation_cascade_delete(db_session):
     explanation_id = article.explanations[0].id
 
     # DELETE direto: testa a FK do PostgreSQL.
-    db_session.execute(
-        Article.__table__.delete().where(
-            Article.id == article_id
-        )
-    )
+    db_session.execute(Article.__table__.delete().where(Article.id == article_id))
 
     remaining = db_session.scalar(
-        select(ArticleExplanation.id).where(
-            ArticleExplanation.id == explanation_id
-        )
+        select(ArticleExplanation.id).where(ArticleExplanation.id == explanation_id)
     )
 
     assert remaining is None
@@ -248,15 +239,11 @@ def test_glossary_term_persistence(db_session):
     db_session.expire_all()
 
     saved = db_session.scalar(
-        select(GlossaryTerm).where(
-            GlossaryTerm.term == term_name
-        )
+        select(GlossaryTerm).where(GlossaryTerm.term == term_name)
     )
 
     assert saved is not None
-    assert saved.definition == (
-        "Definição jurídica simplificada."
-    )
+    assert saved.definition == ("Definição jurídica simplificada.")
 
 
 def test_glossary_term_unique_constraint(db_session):

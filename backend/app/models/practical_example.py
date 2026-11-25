@@ -1,7 +1,6 @@
 """Modelo dos exemplos práticos dos artigos constitucionais."""
 
 from datetime import datetime
-from time import timezone
 from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, func

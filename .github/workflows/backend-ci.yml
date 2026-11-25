@@ -48,7 +48,7 @@ jobs:
 
         # Run static code analysis
         - name: Run Ruff lint
-          run: python -m ruff check .
+          run: python -m ruff check . --no-fix
 
         # Validate code formatting
         - name: Check code formatting
