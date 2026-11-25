@@ -1,6 +1,5 @@
 """Modelo das explicações educativas dos artigos constitucionais."""
 
-
 from datetime import datetime
 from typing import TYPE_CHECKING
 

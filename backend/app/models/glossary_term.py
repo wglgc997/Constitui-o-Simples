@@ -1,4 +1,3 @@
-
 """Modelo de armazenamento dos termos do glossário jurídico."""
 
 from datetime import datetime

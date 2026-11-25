@@ -1,0 +1,55 @@
+name: Quality CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+      branches:
+        - main
+  workflow_dispatch:
+
+permissions:
+    contents: read
+
+jobs:
+    backend_quality:
+      name: Backend Code Quality
+      runs-on: ubuntu-latest
+
+      defaults:
+        run:
+          working-directory: backend
+
+      steps:
+        # Download the repo source code
+        - name: Checkout repository
+          uses: actions/checkout@v7
+
+        # Configure Python and cache dependencies
+        - name: Set up Python
+          uses: actions/setup-python@v7
+          with:
+            python-version: "3.12"
+            cache: "pip"
+            cache-dependency-path: |
+              backend/requirements.txt
+              backend/requirements-dev.txt
+
+        # Install project dependencies
+        - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            python -m pip install -r requirements.txt -r requirements-dev.txt
+
+        # Validate installed dependencies
+        - name: Check dependencies
+          run: python -m pip check
+
+        # Run static code analysis
+        - name: Run Ruff lint
+          run: python -m ruff check . --no-fix
+
+        # Validate code formatting
+        - name: Check code formatting
+          run: python -m ruff format --check .

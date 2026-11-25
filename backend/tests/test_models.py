@@ -1,16 +1,14 @@
-
 """Testes dos modelos SQLAlchemy."""
 
-from sqlalchemy import inspect
+from sqlalchemy import DateTime, String, Text, inspect
 from sqlalchemy.orm import configure_mappers
-from sqlalchemy import ForeignKey
-from sqlalchemy import String, DateTime, Text
 
 from app.models.article import Article
-from app.models.theme import Theme
+from app.models.article_explanation import ArticleExplanation
 from app.models.article_theme import article_themes
-from app.models.practical_example import PracticalExample
 from app.models.glossary_term import GlossaryTerm
+from app.models.practical_example import PracticalExample
+from app.models.theme import Theme
 
 
 def test_article_table_name():
@@ -27,10 +25,7 @@ def test_article_theme_association():
     """Verifica as colunas da tabela associativa."""
     assert article_themes.name == "article_themes"
 
-    columns = {
-        column.name
-        for column in article_themes.columns
-    }
+    columns = {column.name for column in article_themes.columns}
 
     assert columns == {"article_id", "theme_id"}
 
@@ -39,13 +34,9 @@ def test_article_theme_relationship():
     """Verifica o relacionamento N:N entre artigos e temas."""
     configure_mappers()
 
-    article_relationship = inspect(
-        Article
-    ).relationships["themes"]
+    article_relationship = inspect(Article).relationships["themes"]
 
-    theme_relationship = inspect(
-        Theme
-    ).relationships["articles"]
+    theme_relationship = inspect(Theme).relationships["articles"]
 
     assert article_relationship.secondary is article_themes
     assert theme_relationship.secondary is article_themes
@@ -57,18 +48,11 @@ def test_article_theme_relationship():
     assert theme_relationship.uselist is True
 
 
-
-from app.models.article_explanation import ArticleExplanation
-
-
 def test_article_explanation_table():
     """Verifica a estrutura da tabela de explicações."""
     assert ArticleExplanation.__tablename__ == "article_explanations"
 
-    columns = {
-        column.name
-        for column in ArticleExplanation.__table__.columns
-    }
+    columns = {column.name for column in ArticleExplanation.__table__.columns}
 
     assert {
         "id",
@@ -85,13 +69,9 @@ def test_article_explanation_relationship():
     """Verifica o relacionamento 1:N com Article."""
     configure_mappers()
 
-    article_relationship = inspect(
-        Article
-    ).relationships["explanations"]
+    article_relationship = inspect(Article).relationships["explanations"]
 
-    explanation_relationship = inspect(
-        ArticleExplanation
-    ).relationships["article"]
+    explanation_relationship = inspect(ArticleExplanation).relationships["article"]
 
     assert article_relationship.uselist is True
     assert explanation_relationship.uselist is False
@@ -114,10 +94,7 @@ def test_practical_example_table():
     """Verifica a estrutura da tabela de exemplos práticos."""
     assert PracticalExample.__tablename__ == "practical_examples"
 
-    columns = {
-        column.name
-        for column in PracticalExample.__table__.columns
-    }
+    columns = {column.name for column in PracticalExample.__table__.columns}
 
     assert {
         "id",
@@ -133,13 +110,9 @@ def test_practical_example_relationship():
     """Verifica o relacionamento 1:N com Article."""
     configure_mappers()
 
-    article_relationship = inspect(
-        Article
-    ).relationships["practical_examples"]
+    article_relationship = inspect(Article).relationships["practical_examples"]
 
-    example_relationship = inspect(
-        PracticalExample
-    ).relationships["article"]
+    example_relationship = inspect(PracticalExample).relationships["article"]
 
     assert article_relationship.uselist is True
     assert example_relationship.uselist is False
@@ -173,7 +146,6 @@ def test_article_explanation_device_reference():
     assert isinstance(column.type, String)
     assert column.type.length == 100
     assert column.nullable is True
-
 
 
 def test_article_explanation_source_url():
@@ -221,7 +193,6 @@ def test_article_explanation_published_at():
     assert column.nullable is True
 
 
-
 def test_article_source_url():
     """Verifica o campo da fonte oficial do artigo."""
     column = Article.__table__.columns["source_url"]
@@ -239,15 +210,11 @@ def test_article_source_checked_at():
     assert column.nullable is True
 
 
-
 def test_glossary_term_table():
     """Verifica a estrutura da tabela do glossário."""
     assert GlossaryTerm.__tablename__ == "glossary_terms"
 
-    columns = {
-        column.name
-        for column in GlossaryTerm.__table__.columns
-    }
+    columns = {column.name for column in GlossaryTerm.__table__.columns}
 
     assert columns == {
         "id",
