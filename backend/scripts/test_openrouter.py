@@ -1,9 +1,11 @@
 import truststore
 
+# Configura o SSL antes de importart bibliotecas HTTP.
 truststore.inject_into_ssl()
 
-import httpx
-from app.core.config import settings
+import httpx  # noqa: E402
+
+from app.core.config import settings  # noqa: E402
 
 
 def main():

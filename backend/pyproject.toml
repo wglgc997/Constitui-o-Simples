@@ -1,0 +1,49 @@
+# Constituição Simples
+# Backend code quality and testing configuration.
+
+# ======
+# Ruff
+# ======
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+  "E", #PEP 8 errors
+  "W", # PEP 8 warnings
+  "F",    # Pyflakes
+  "I",    # Import sorting
+  "B",    # Bugbear
+  "UP",   # Python modernization
+]
+
+[tool.ruff.lint.per-file-ignores]
+"alembic/versions/*.py" = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+# =====
+# Pytest
+# =====
+
+[tool.pytest.ini_options]
+minversion = "8.3"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-ra --strict-markers"
+
+[tool.covarage.run]
+source = ["app"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = true
+precision = 2

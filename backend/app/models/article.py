@@ -1,21 +1,20 @@
 """Modelo de armazenamento dos artigos da Constituição"""
 
+from datetime import datetime
 from typing import TYPE_CHECKING
 
-from datetime import datetime
-
-from app.db.base import Base
 from sqlalchemy import DateTime, Integer, String, Text, func
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from app.db.base import Base
 from app.models.article_theme import article_themes
 
 if TYPE_CHECKING:
-    from app.models.theme import Theme
-    from app.models.practical_example import PracticalExample
     from app.models.article_explanation import ArticleExplanation
+    from app.models.practical_example import PracticalExample
+    from app.models.theme import Theme
+
 
 class Article(Base):
     """Representa um artigo da Constituição"""
@@ -40,8 +39,10 @@ class Article(Base):
         nullable=True,
     )
 
-    #Nunca deve receber conteúdo simplificado pela IA. As explicações serão armazenadas em outra tabela,
-    # garantindo a separação entre a Constituição oficial e o conteúdo educativo.
+    # Nunca deve receber conteúdo simplificado pela IA.
+    # As explicações serão armazenadas em outra tabela,
+    # garantindo a separação entre a Constituição oficial
+    # e o conteúdo educativo.
     original_text: Mapped[str] = mapped_column(
         Text,
         nullable=False,
@@ -83,10 +84,8 @@ class Article(Base):
     practical_examples: Mapped[list["PracticalExample"]] = relationship(
         "PracticalExample",
         back_populates="article",
-
     )
 
     explanations: Mapped[list["ArticleExplanation"]] = relationship(
-        "ArticleExplanation",
-        back_populates="article"
+        "ArticleExplanation", back_populates="article"
     )
