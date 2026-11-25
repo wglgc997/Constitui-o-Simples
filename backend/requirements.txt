@@ -7,6 +7,7 @@ uvicorn[standard]>=0.34,<1.0
 
 # Configuracoes
 pydantic-settings>=2.8,<3.0
+python-dotenv>=1.0,<2.0
 
 # Banco de dados
 sqlalchemy>=2.0,<3.0
@@ -19,4 +20,4 @@ beautifulsoup4>=4.13,<5.0
 lxml>=5.4,<7.0
 
 # Tratamento de SSL
-truststore
+truststore>=0.10,<1.0
