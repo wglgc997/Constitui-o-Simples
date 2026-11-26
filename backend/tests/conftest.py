@@ -56,4 +56,5 @@ def db_session(test_engine):
             ) as session:
                 yield session
         finally:
-            transaction.rollback()
+            if transaction.is_active:
+                transaction.rollback()
