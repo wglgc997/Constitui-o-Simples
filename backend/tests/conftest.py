@@ -1,5 +1,6 @@
 """Fixtures de integração com PostgreSQL."""
 
+import os
 from pathlib import Path
 
 import pytest
@@ -15,11 +16,18 @@ def test_engine():
 
     env_file = Path(__file__).resolve().parents[1] / ".env.test"
 
-    database_url = dotenv_values(env_file).get("DATABASE_URL")
+    # Prioriza a variável de ambiente exclusiva de testes.
+    # Utiliza o arquivo .env.test como fallback local.
+    database_url = os.getenv("TEST_DATABASE_URL") or dotenv_values(env_file).get(
+        "DATABASE_URL"
+    )
 
     if not database_url:
-        raise RuntimeError("DATABASE_URL ausente em backend/.env.test")
+        raise RuntimeError(
+            "Configure TEST_DATABASE_URL ou DATABASE_URL em backend/.env.test"
+        )
 
+    # Impede a utilização de um banco com nome diferente do esperado.
     url = make_url(database_url)
 
     if url.database != "constituicao_simples_test":
@@ -45,7 +53,6 @@ def db_session(test_engine):
         try:
             with Session(
                 bind=connection,
-                join_transaction_mode="create_savepoint",
             ) as session:
                 yield session
         finally:
